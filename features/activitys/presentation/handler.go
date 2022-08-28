@@ -38,6 +38,7 @@ func (h *ActivityHandler) GetAllData(c echo.Context) error {
 func (h *ActivityHandler) GetData(c echo.Context) error {
 	id := c.Param("id")
 	idActivity, errId := strconv.Atoi(id)
+	strIdActivity := strconv.Itoa(idActivity)
 	if errId != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status":  "Error",
@@ -48,7 +49,7 @@ func (h *ActivityHandler) GetData(c echo.Context) error {
 	if row == 0 {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"status":  "Not Found",
-			"message": "Data not found",
+			"message": "Activity with ID " + strIdActivity + " Not Found",
 			"data":    map[string]interface{}{},
 		})
 	}
@@ -98,6 +99,7 @@ func (h *ActivityHandler) InsertData(c echo.Context) error {
 func (h *ActivityHandler) UpdateData(c echo.Context) error {
 	id := c.Param("id")
 	idActivity, errId := strconv.Atoi(id)
+	strIdActivity := strconv.Itoa(idActivity)
 	if errId != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status":  "Error",
@@ -128,7 +130,7 @@ func (h *ActivityHandler) UpdateData(c echo.Context) error {
 	if row == 0 {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"status":  "Not Found",
-			"message": "Data not found",
+			"message": "Activity with ID " + strIdActivity + " Not Found",
 			"data":    map[string]interface{}{},
 		})
 	}

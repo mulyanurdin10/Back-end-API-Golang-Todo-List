@@ -35,7 +35,7 @@ func (avtcase *activityAvtCase) InsertData(insert activitys.Core) (data activity
 	}
 	errTitle := v.Var(insert.Title, "required")
 	if errTitle != nil {
-		return data, -1, errors.New("title not be null")
+		return data, -1, errors.New("title cannot be null")
 	}
 	rowUnique, _ := avtcase.activityData.UniqueData(insert)
 	if rowUnique == 1 {
