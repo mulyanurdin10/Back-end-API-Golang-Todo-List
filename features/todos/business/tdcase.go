@@ -32,3 +32,15 @@ func (tdcase *todoTdCase) InsertData(insert todos.Core) (data todos.Core, row in
 	data, row, err = tdcase.todoData.InsertData(insert)
 	return data, row, err
 }
+
+func (tdcase *todoTdCase) UpdateData(id int, insert todos.Core) (data todos.Core, row int, err error) {
+	dataGet, _, _ := tdcase.todoData.GetData(id)
+	if insert.Title == "" {
+		insert.Title = dataGet.Title
+	}
+	if insert.IsActive == false && insert.IsActive != true {
+		insert.IsActive = dataGet.IsActive
+	}
+	data, row, err = tdcase.todoData.UpdateData(id, insert)
+	return data, row, err
+}

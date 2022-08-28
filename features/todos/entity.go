@@ -14,8 +14,11 @@ type Core struct {
 
 type Business interface {
 	InsertData(insert Core) (data Core, row int, err error)
+	UpdateData(id int, insert Core) (data Core, row int, err error)
 }
 
 type Data interface {
+	GetData(id int) (data Core, row int, err error)
 	InsertData(insert Core) (data Core, row int, err error)
+	UpdateData(id int, insert Core) (data Core, row int, err error)
 }
