@@ -17,6 +17,11 @@ func NewActivityBusiness(avtData activitys.Data) activitys.Business {
 	}
 }
 
+func (avtcase *activityAvtCase) GetData(id int) (data activitys.Core, row int, err error) {
+	data, row, err = avtcase.activityData.GetData(id)
+	return data, row, err
+}
+
 func (avtcase *activityAvtCase) InsertData(insert activitys.Core) (data activitys.Core, row int, err error) {
 	v := validator.New()
 	errEmail := v.Var(insert.Email, "required,email")
