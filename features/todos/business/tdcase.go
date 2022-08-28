@@ -17,6 +17,11 @@ func NewTodoBusiness(tdData todos.Data) todos.Business {
 	}
 }
 
+func (tdcase *todoTdCase) GetAllData(param string) (data []todos.Core, row int, err error) {
+	data, row, err = tdcase.todoData.GetAllData(param)
+	return data, row, err
+}
+
 func (tdcase *todoTdCase) GetData(id int) (data todos.Core, row int, err error) {
 	data, row, err = tdcase.todoData.GetData(id)
 	return data, row, err

@@ -20,6 +20,29 @@ func NewTodoHandler(business todos.Business) *TodoHandler {
 	}
 }
 
+func (h *TodoHandler) GetAllData(c echo.Context) error {
+	match := c.QueryParam("activity_group_id")
+	data, row, err := h.todoBusiness.GetAllData(match)
+	if row == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  "Success",
+			"message": "Success",
+			"data":    response.FromCoreList(data),
+		})
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"status":  "Error",
+			"message": "Failed to get all data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status":  "Success",
+		"message": "Success",
+		"data":    response.FromCoreList(data),
+	})
+}
+
 func (h *TodoHandler) GetData(c echo.Context) error {
 	id := c.Param("id")
 	idTodo, errId := strconv.Atoi(id)

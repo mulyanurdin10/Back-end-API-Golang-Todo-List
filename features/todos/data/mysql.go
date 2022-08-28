@@ -16,6 +16,15 @@ func NewTodoRepository(conn *gorm.DB) todos.Data {
 	}
 }
 
+func (repo *mysqlTodoRepository) GetAllData(param string) (data []todos.Core, row int, err error) {
+	var getAllData []Todos
+	tx := repo.db.Find(&getAllData, param)
+	if tx.Error != nil {
+		return data, 0, tx.Error
+	}
+	return toCoreList(getAllData), int(tx.RowsAffected), nil
+}
+
 func (repo *mysqlTodoRepository) GetData(id int) (data todos.Core, row int, err error) {
 	var getData Todos
 	tx := repo.db.First(&getData, id)
