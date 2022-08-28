@@ -16,10 +16,28 @@ func NewActivityRepository(conn *gorm.DB) activitys.Data {
 	}
 }
 
+func (repo *mysqlActivityRepository) GetData(id int) (data activitys.Core, row int, err error) {
+	var getData Activitys
+	tx := repo.db.First(&getData, id)
+	if tx.Error != nil {
+		return data, 0, tx.Error
+	}
+	return getData.toCore(), int(tx.RowsAffected), nil
+}
+
 func (repo *mysqlActivityRepository) InsertData(insert activitys.Core) (data activitys.Core, row int, err error) {
 	var getData Activitys
 	insertData := fromCore(insert)
 	tx := repo.db.Create(&insertData).First(&getData, insertData.ID)
+	if tx.Error != nil {
+		return data, 0, tx.Error
+	}
+	return getData.toCore(), int(tx.RowsAffected), nil
+}
+
+func (repo *mysqlActivityRepository) UpdateData(id int, insert activitys.Core) (data activitys.Core, row int, err error) {
+	var getData Activitys
+	tx := repo.db.First(&getData, id).Updates(map[string]interface{}{"email": insert.Email, "title": insert.Title})
 	if tx.Error != nil {
 		return data, 0, tx.Error
 	}
