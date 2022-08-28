@@ -17,6 +17,11 @@ func NewTodoBusiness(tdData todos.Data) todos.Business {
 	}
 }
 
+func (tdcase *todoTdCase) GetData(id int) (data todos.Core, row int, err error) {
+	data, row, err = tdcase.todoData.GetData(id)
+	return data, row, err
+}
+
 func (tdcase *todoTdCase) InsertData(insert todos.Core) (data todos.Core, row int, err error) {
 	v := validator.New()
 	errActivitysID := v.Var(insert.ActivitysID, "required")
