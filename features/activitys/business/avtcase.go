@@ -34,3 +34,25 @@ func (avtcase *activityAvtCase) InsertData(insert activitys.Core) (data activity
 	data, row, err = avtcase.activityData.InsertData(insert)
 	return data, row, err
 }
+
+func (avtcase *activityAvtCase) UpdateData(id int, insert activitys.Core) (data activitys.Core, row int, err error) {
+	dataGet, _, _ := avtcase.activityData.GetData(id)
+	v := validator.New()
+	if insert.Email != "" {
+		errEmail := v.Var(insert.Email, "required,email")
+		if errEmail != nil {
+			return data, -1, errors.New("invalid format email")
+		}
+		rowUnique, _ := avtcase.activityData.UniqueData(insert)
+		if rowUnique == 1 {
+			return data, -1, errors.New("email already exists")
+		}
+	} else if insert.Email == "" {
+		insert.Email = dataGet.Email
+	}
+	if insert.Title == "" {
+		insert.Title = dataGet.Title
+	}
+	data, row, err = avtcase.activityData.UpdateData(id, insert)
+	return data, row, err
+}
