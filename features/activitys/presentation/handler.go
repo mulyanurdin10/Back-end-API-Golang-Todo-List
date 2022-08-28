@@ -20,6 +20,36 @@ func NewActivityHandler(business activitys.Business) *ActivityHandler {
 	}
 }
 
+func (h *ActivityHandler) GetData(c echo.Context) error {
+	id := c.Param("id")
+	idActivity, errId := strconv.Atoi(id)
+	if errId != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  "Error",
+			"message": "Invalid ID",
+		})
+	}
+	data, row, err := h.activityBusiness.GetData(idActivity)
+	if row == 0 {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"status":  "Not Found",
+			"message": "Data not found",
+			"data":    map[string]interface{}{},
+		})
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"status":  "Error",
+			"message": "Failed to get data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status":  "Success",
+		"message": "Success",
+		"data":    response.FromCore(data),
+	})
+}
+
 func (h *ActivityHandler) InsertData(c echo.Context) error {
 	var insertData request.Activitys
 	errBind := c.Bind(&insertData)
