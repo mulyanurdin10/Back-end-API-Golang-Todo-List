@@ -2,6 +2,7 @@ package presentation
 
 import (
 	"net/http"
+	"strconv"
 	"testcode/features/todos"
 	"testcode/features/todos/presentation/request"
 	"testcode/features/todos/presentation/response"
@@ -43,6 +44,51 @@ func (h *TodoHandler) InsertData(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusCreated, map[string]interface{}{
+		"status":  "Success",
+		"message": "Success",
+		"data":    response.FromCore(data),
+	})
+}
+
+func (h *TodoHandler) UpdateData(c echo.Context) error {
+	id := c.Param("id")
+	idTodo, errId := strconv.Atoi(id)
+	strIdTodo := strconv.Itoa(idTodo)
+	if errId != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  "Error",
+			"message": "Invalid ID",
+		})
+	}
+	title := c.FormValue("title")
+	boolIsActive, _ := strconv.ParseBool(c.FormValue("is_active"))
+	var insertData = request.Todos{
+		Title:    title,
+		IsActive: boolIsActive,
+	}
+	errBind := c.Bind(&insertData)
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  "Error",
+			"message": "Failed to bind data, Check your input",
+		})
+	}
+	newTodo := request.ToCore(insertData)
+	data, row, err := h.todoBusiness.UpdateData(idTodo, newTodo)
+	if row == 0 {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"status":  "Not Found",
+			"message": "Activity with ID " + strIdTodo + " Not Found",
+			"data":    map[string]interface{}{},
+		})
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"status":  "Error",
+			"message": "data failed to change",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
 		"status":  "Success",
 		"message": "Success",
 		"data":    response.FromCore(data),
