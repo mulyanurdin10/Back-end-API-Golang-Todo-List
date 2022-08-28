@@ -6,13 +6,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type Activitys struct {
+type Activities struct {
 	gorm.Model
 	Email string `gorm:"unique" json:"email" form:"email"`
 	Title string `json:"title" form:"title"`
 }
 
-func toCoreList(data []Activitys) []activitys.Core {
+func toCoreList(data []Activities) []activitys.Core {
 	result := []activitys.Core{}
 	for key := range data {
 		result = append(result, data[key].toCore())
@@ -20,7 +20,7 @@ func toCoreList(data []Activitys) []activitys.Core {
 	return result
 }
 
-func (data *Activitys) toCore() activitys.Core {
+func (data *Activities) toCore() activitys.Core {
 	return activitys.Core{
 		ID:        int(data.ID),
 		Email:     data.Email,
@@ -30,8 +30,8 @@ func (data *Activitys) toCore() activitys.Core {
 	}
 }
 
-func fromCore(core activitys.Core) Activitys {
-	return Activitys{
+func fromCore(core activitys.Core) Activities {
+	return Activities{
 		Email: core.Email,
 		Title: core.Title,
 	}

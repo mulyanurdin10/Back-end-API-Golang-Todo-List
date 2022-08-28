@@ -29,8 +29,8 @@ func (tdcase *todoTdCase) GetData(id int) (data todos.Core, row int, err error) 
 
 func (tdcase *todoTdCase) InsertData(insert todos.Core) (data todos.Core, row int, err error) {
 	v := validator.New()
-	errActivitysID := v.Var(insert.ActivitysID, "required")
-	if errActivitysID != nil {
+	errActivityGroupID := v.Var(insert.ActivityGroupID, "required")
+	if errActivityGroupID != nil {
 		return data, -1, errors.New("activity_group_id cannot be null")
 	}
 	errTitle := v.Var(insert.Title, "required")

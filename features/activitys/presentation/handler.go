@@ -67,7 +67,7 @@ func (h *ActivityHandler) GetData(c echo.Context) error {
 }
 
 func (h *ActivityHandler) InsertData(c echo.Context) error {
-	var insertData request.Activitys
+	var insertData request.Activities
 	errBind := c.Bind(&insertData)
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -108,7 +108,7 @@ func (h *ActivityHandler) UpdateData(c echo.Context) error {
 	}
 	email := c.FormValue("email")
 	title := c.FormValue("title")
-	var insertData = request.Activitys{
+	var insertData = request.Activities{
 		Email: email,
 		Title: title,
 	}

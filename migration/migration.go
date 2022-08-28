@@ -8,6 +8,6 @@ import (
 )
 
 func InitMigrate(db *gorm.DB) {
-	db.AutoMigrate(&_mActivitys.Activitys{})
+	db.AutoMigrate(&_mActivitys.Activities{})
 	db.AutoMigrate(&_mTodos.Todos{})
 }

@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Activitys struct {
+type Activities struct {
 	ID        int       `json:"id"`
 	Email     string    `json:"email"`
 	Title     string    `json:"title"`
@@ -13,16 +13,16 @@ type Activitys struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func FromCoreList(data []activitys.Core) []Activitys {
-	result := []Activitys{}
+func FromCoreList(data []activitys.Core) []Activities {
+	result := []Activities{}
 	for key := range data {
 		result = append(result, FromCore(data[key]))
 	}
 	return result
 }
 
-func FromCore(data activitys.Core) Activitys {
-	return Activitys{
+func FromCore(data activitys.Core) Activities {
+	return Activities{
 		ID:        data.ID,
 		Email:     data.Email,
 		Title:     data.Title,

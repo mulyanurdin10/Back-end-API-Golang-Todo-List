@@ -17,7 +17,7 @@ func NewActivityRepository(conn *gorm.DB) activitys.Data {
 }
 
 func (repo *mysqlActivityRepository) GetAllData() (data []activitys.Core, err error) {
-	var getAllData []Activitys
+	var getAllData []Activities
 	tx := repo.db.Find(&getAllData)
 	if tx.Error != nil {
 		return data, tx.Error
@@ -26,7 +26,7 @@ func (repo *mysqlActivityRepository) GetAllData() (data []activitys.Core, err er
 }
 
 func (repo *mysqlActivityRepository) GetData(id int) (data activitys.Core, row int, err error) {
-	var getData Activitys
+	var getData Activities
 	tx := repo.db.First(&getData, id)
 	if tx.Error != nil {
 		return data, 0, tx.Error
@@ -35,7 +35,7 @@ func (repo *mysqlActivityRepository) GetData(id int) (data activitys.Core, row i
 }
 
 func (repo *mysqlActivityRepository) InsertData(insert activitys.Core) (data activitys.Core, row int, err error) {
-	var getData Activitys
+	var getData Activities
 	insertData := fromCore(insert)
 	tx := repo.db.Create(&insertData).First(&getData, insertData.ID)
 	if tx.Error != nil {
@@ -45,7 +45,7 @@ func (repo *mysqlActivityRepository) InsertData(insert activitys.Core) (data act
 }
 
 func (repo *mysqlActivityRepository) UpdateData(id int, insert activitys.Core) (data activitys.Core, row int, err error) {
-	var getData Activitys
+	var getData Activities
 	tx := repo.db.First(&getData, id).Updates(map[string]interface{}{"email": insert.Email, "title": insert.Title})
 	if tx.Error != nil {
 		return data, 0, tx.Error
@@ -54,7 +54,7 @@ func (repo *mysqlActivityRepository) UpdateData(id int, insert activitys.Core) (
 }
 
 func (repo *mysqlActivityRepository) DeleteData(id int) (row int, err error) {
-	var getData Activitys
+	var getData Activities
 	tx := repo.db.Unscoped().Delete(&getData, id)
 	if tx.Error != nil {
 		return 0, tx.Error
@@ -63,7 +63,7 @@ func (repo *mysqlActivityRepository) DeleteData(id int) (row int, err error) {
 }
 
 func (repo *mysqlActivityRepository) UniqueData(insert activitys.Core) (row int, err error) {
-	var getData Activitys
+	var getData Activities
 	insertData := fromCore(insert)
 	tx := repo.db.Where("email = ?", insertData.Email).First(&getData)
 	if tx.Error != nil {
