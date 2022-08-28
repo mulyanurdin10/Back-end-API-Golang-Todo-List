@@ -66,3 +66,8 @@ func (avtcase *activityAvtCase) UpdateData(id int, insert activitys.Core) (data 
 	data, row, err = avtcase.activityData.UpdateData(id, insert)
 	return data, row, err
 }
+
+func (avtcase *activityAvtCase) DeleteData(id int) (row int, err error) {
+	row, err = avtcase.activityData.DeleteData(id)
+	return row, err
+}
