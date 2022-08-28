@@ -19,7 +19,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	// Activitys
-	// e.GET("/activity-groups", presenter.ActivityPresenter.GetAllData)
+	e.GET("/activity-groups", presenter.ActivityPresenter.GetAllData)
 	e.GET("/activity-groups/:id", presenter.ActivityPresenter.GetData)
 	e.POST("/activity-groups", presenter.ActivityPresenter.InsertData)
 	e.PUT("/activity-groups/:id", presenter.ActivityPresenter.UpdateData)

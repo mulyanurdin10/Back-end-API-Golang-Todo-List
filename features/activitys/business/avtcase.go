@@ -17,6 +17,11 @@ func NewActivityBusiness(avtData activitys.Data) activitys.Business {
 	}
 }
 
+func (avtcase *activityAvtCase) GetAllData() (data []activitys.Core, err error) {
+	data, err = avtcase.activityData.GetAllData()
+	return data, err
+}
+
 func (avtcase *activityAvtCase) GetData(id int) (data activitys.Core, row int, err error) {
 	data, row, err = avtcase.activityData.GetData(id)
 	return data, row, err
