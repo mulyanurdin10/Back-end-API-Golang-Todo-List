@@ -30,7 +30,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("/todo-items/:id", presenter.TodoPresenter.GetData)
 	e.POST("/todo-items", presenter.TodoPresenter.InsertData)
 	e.PATCH("/todo-items/:id", presenter.TodoPresenter.UpdateData)
-	// e.DELETE("/todo-items/:id", presenter.TodoPresenter.DeleteData)
+	e.DELETE("/todo-items/:id", presenter.TodoPresenter.DeleteData)
 
 	return e
 }
