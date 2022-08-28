@@ -20,6 +20,21 @@ func NewActivityHandler(business activitys.Business) *ActivityHandler {
 	}
 }
 
+func (h *ActivityHandler) GetAllData(c echo.Context) error {
+	data, err := h.activityBusiness.GetAllData()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"status":  "Error",
+			"message": "Failed to get all data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status":  "Success",
+		"message": "Success",
+		"data":    response.FromCoreList(data),
+	})
+}
+
 func (h *ActivityHandler) GetData(c echo.Context) error {
 	id := c.Param("id")
 	idActivity, errId := strconv.Atoi(id)

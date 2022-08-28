@@ -16,6 +16,15 @@ func NewActivityRepository(conn *gorm.DB) activitys.Data {
 	}
 }
 
+func (repo *mysqlActivityRepository) GetAllData() (data []activitys.Core, err error) {
+	var getAllData []Activitys
+	tx := repo.db.Find(&getAllData)
+	if tx.Error != nil {
+		return data, tx.Error
+	}
+	return toCoreList(getAllData), nil
+}
+
 func (repo *mysqlActivityRepository) GetData(id int) (data activitys.Core, row int, err error) {
 	var getData Activitys
 	tx := repo.db.First(&getData, id)
