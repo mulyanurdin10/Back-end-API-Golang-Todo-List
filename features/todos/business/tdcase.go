@@ -54,3 +54,8 @@ func (tdcase *todoTdCase) UpdateData(id int, insert todos.Core) (data todos.Core
 	data, row, err = tdcase.todoData.UpdateData(id, insert)
 	return data, row, err
 }
+
+func (tdcase *todoTdCase) DeleteData(id int) (row int, err error) {
+	row, err = tdcase.todoData.DeleteData(id)
+	return row, err
+}

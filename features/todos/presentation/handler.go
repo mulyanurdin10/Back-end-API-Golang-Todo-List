@@ -148,3 +148,34 @@ func (h *TodoHandler) UpdateData(c echo.Context) error {
 		"data":    response.FromCore(data),
 	})
 }
+
+func (h *TodoHandler) DeleteData(c echo.Context) error {
+	id := c.Param("id")
+	idTodo, errId := strconv.Atoi(id)
+	strIdTodo := strconv.Itoa(idTodo)
+	if errId != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  "Error",
+			"message": "Invalid ID",
+		})
+	}
+	row, err := h.todoBusiness.DeleteData(idTodo)
+	if row == 0 {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"status":  "Not Found",
+			"message": "Todo with ID " + strIdTodo + " Not Found",
+			"data":    map[string]interface{}{},
+		})
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"status":  "Error",
+			"message": "failed to get data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status":  "Success",
+		"message": "Success",
+		"data":    map[string]interface{}{},
+	})
+}

@@ -52,3 +52,12 @@ func (repo *mysqlTodoRepository) UpdateData(id int, insert todos.Core) (data tod
 	}
 	return getData.toCore(), int(tx.RowsAffected), nil
 }
+
+func (repo *mysqlTodoRepository) DeleteData(id int) (row int, err error) {
+	var getData Todos
+	tx := repo.db.Unscoped().Delete(&getData, id)
+	if tx.Error != nil {
+		return 0, tx.Error
+	}
+	return int(tx.RowsAffected), nil
+}
