@@ -20,6 +20,37 @@ func NewTodoHandler(business todos.Business) *TodoHandler {
 	}
 }
 
+func (h *TodoHandler) GetData(c echo.Context) error {
+	id := c.Param("id")
+	idTodo, errId := strconv.Atoi(id)
+	strIdTodo := strconv.Itoa(idTodo)
+	if errId != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  "Error",
+			"message": "Invalid ID",
+		})
+	}
+	data, row, err := h.todoBusiness.GetData(idTodo)
+	if row == 0 {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"status":  "Not Found",
+			"message": "Todo with ID " + strIdTodo + " Not Found",
+			"data":    map[string]interface{}{},
+		})
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"status":  "Error",
+			"message": "Failed to get data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status":  "Success",
+		"message": "Success",
+		"data":    response.FromCore(data),
+	})
+}
+
 func (h *TodoHandler) InsertData(c echo.Context) error {
 	var insertData request.Todos
 	errBind := c.Bind(&insertData)
@@ -78,7 +109,7 @@ func (h *TodoHandler) UpdateData(c echo.Context) error {
 	if row == 0 {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"status":  "Not Found",
-			"message": "Activity with ID " + strIdTodo + " Not Found",
+			"message": "Todo with ID " + strIdTodo + " Not Found",
 			"data":    map[string]interface{}{},
 		})
 	}
