@@ -23,7 +23,7 @@ func New(presenter factory.Presenter) *echo.Echo {
 	e.GET("/activity-groups/:id", presenter.ActivityPresenter.GetData)
 	e.POST("/activity-groups", presenter.ActivityPresenter.InsertData)
 	e.PATCH("/activity-groups/:id", presenter.ActivityPresenter.UpdateData)
-	// e.DELETE("/activity-groups/:id", presenter.ActivityPresenter.DeleteData)
+	e.DELETE("/activity-groups/:id", presenter.ActivityPresenter.DeleteData)
 
 	// Todos
 	e.GET("/todo-items", presenter.TodoPresenter.GetAllData)

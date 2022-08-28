@@ -53,6 +53,15 @@ func (repo *mysqlActivityRepository) UpdateData(id int, insert activitys.Core) (
 	return getData.toCore(), int(tx.RowsAffected), nil
 }
 
+func (repo *mysqlActivityRepository) DeleteData(id int) (row int, err error) {
+	var getData Activitys
+	tx := repo.db.Unscoped().Delete(&getData, id)
+	if tx.Error != nil {
+		return 0, tx.Error
+	}
+	return int(tx.RowsAffected), nil
+}
+
 func (repo *mysqlActivityRepository) UniqueData(insert activitys.Core) (row int, err error) {
 	var getData Activitys
 	insertData := fromCore(insert)

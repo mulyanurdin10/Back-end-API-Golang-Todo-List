@@ -146,3 +146,34 @@ func (h *ActivityHandler) UpdateData(c echo.Context) error {
 		"data":    response.FromCore(data),
 	})
 }
+
+func (h *ActivityHandler) DeleteData(c echo.Context) error {
+	id := c.Param("id")
+	idActivity, errId := strconv.Atoi(id)
+	strIdActivity := strconv.Itoa(idActivity)
+	if errId != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  "Error",
+			"message": "Invalid ID",
+		})
+	}
+	row, err := h.activityBusiness.DeleteData(idActivity)
+	if row == 0 {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"status":  "Not Found",
+			"message": "Activity with ID " + strIdActivity + " Not Found",
+			"data":    map[string]interface{}{},
+		})
+	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"status":  "Error",
+			"message": "failed to get data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status":  "Success",
+		"message": "Success",
+		"data":    map[string]interface{}{},
+	})
+}
