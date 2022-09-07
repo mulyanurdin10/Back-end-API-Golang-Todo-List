@@ -6,6 +6,7 @@ import (
 	"testcode/features/activitys"
 	"testcode/features/activitys/presentation/request"
 	"testcode/features/activitys/presentation/response"
+	"testcode/helper"
 
 	"github.com/labstack/echo/v4"
 )
@@ -54,16 +55,9 @@ func (h *ActivityHandler) GetData(c echo.Context) error {
 		})
 	}
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"status":  "Error",
-			"message": "Failed to get data",
-		})
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("Failed to get data"))
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status":  "Success",
-		"message": "Success",
-		"data":    response.FromCore(data),
-	})
+	return c.JSON(http.StatusOK, helper.ResponseSuccessWithData("success", data))
 }
 
 func (h *ActivityHandler) InsertData(c echo.Context) error {

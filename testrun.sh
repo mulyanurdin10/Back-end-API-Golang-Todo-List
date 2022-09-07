@@ -1,0 +1,1 @@
+go test ./features/activitys/... -coverprofile=cover.out && go tool cover -html=cover.out
